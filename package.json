@@ -1,0 +1,30 @@
+{
+  "name": "lab-07-api-server",
+  "version": "1.0.0",
+  "description": "JS401 Lab07",
+  "main": "ll.js",
+  "scripts": {
+    "test": "jest --verbose",
+    "start": "node index.js",
+    "lint": "eslint **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmerlemeier-401-advanced-javascript/lab-07-api-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmerlemeier-401-advanced-javascript/lab-07-api-server/issues"
+  },
+  "homepage": "https://github.com/jmerlemeier-401-advanced-javascript/lab-07-api-server#readme",
+  "dependencies": {
+    "eslint": "^6.5.1",
+    "express": "^4.17.1",
+    "express-swagger-generator": "^1.1.15",
+    "jest": "^24.9.0",
+    "superagent": "^5.1.0",
+    "supertest": "^4.0.2"
+  }
+}
