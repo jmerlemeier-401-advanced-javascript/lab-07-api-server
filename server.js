@@ -9,10 +9,18 @@ app.use(express.json());
 //stores POST objects
 const db = [];
 
+/**
+ * 
+ * @param {string} status 
+ */
 const errorHandler = (status) => (err, req, res) => res.status(status).send('Error Found');
 
 //============= MIDDLEWARE ================
 //Function currying
+/**
+ * 
+ * @param {string} message 
+ */
 function LOGGER(message) {
 
   return function requestTime(req, res, next) {
@@ -22,20 +30,25 @@ function LOGGER(message) {
   }
 }
 
+/**
+ * 
+ * @param {object} req 
+ * @param {object} res 
+ * @param {function} next 
+ */
 function randomBoolean(req, res, next){
   req.valid = Boolean(Math.round(Math.random()));
   next();
 }
 
-//======= app.use ===========
-// app.use(LOGGER('Ohh, you betcha...your code worked'));
-// app.use(randomBoolean());
-
 //========== ROUTE TO GET ALL CATEGORIES ========
+
 /**
  * Get a list of posts
- * @returns {array} db, status code 200 [...posts];
- * @returns {error} status code 500 - server error;
+ * @param {string} route
+ * @param {function} helperfunction or more
+ * @param {function} callback 
+ * @returns {object} count, results. 
  */
 app.get('/categories', randomBoolean, LOGGER('GET categories'), (req, res, next) => {
   let count = db.length;
@@ -49,6 +62,13 @@ app.get('/categories', randomBoolean, LOGGER('GET categories'), (req, res, next)
 });
 
 //========== ROUTE TO CREATE A CATEGORY ========
+/**
+ * Get a list of posts
+ * @param {string} route
+ * @param {function} helperfunction or more
+ * @param {function} callback 
+ * @returns {object} count, results. 
+ */
 app.post('/categories', randomBoolean, LOGGER('POST categories'), (req, res, next) => {
     // if(req.valid === 'true'){
       let record = req.body;

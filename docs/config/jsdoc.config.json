@@ -1,1 +1,9 @@
-// tell js docs where to look for
+{
+  "source": {
+    "include" : ["./src"]
+  },
+  "opts": {
+    "destination": "./docs/",
+    "recurse": true
+  }
+}
