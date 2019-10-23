@@ -4,8 +4,9 @@
   "description": "JS401 Lab07",
   "main": "ll.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "jest --verbose",
+    "start": "node index.js",
+    "lint": "eslint **/*.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,9 @@
   "dependencies": {
     "eslint": "^6.5.1",
     "express": "^4.17.1",
+    "express-swagger-generator": "^1.1.15",
     "jest": "^24.9.0",
-    "superagent": "^5.1.0"
+    "superagent": "^5.1.0",
+    "supertest": "^4.0.2"
   }
 }

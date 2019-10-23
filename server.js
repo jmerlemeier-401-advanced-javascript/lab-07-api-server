@@ -3,54 +3,75 @@
 const express = require('express');
 
 const app = express();
-//app.use everywhere!
-app.use(addNumbers);
-app.use(LOGGER);
+app.use(express.json());
 
-const PORT = process.env.PORT || 3001;
+//define a db in memory
+//stores POST objects
+const db = [];
 
-function notFound(req, res, next) {
-  res.status(404).send('Not Found');
+const errorHandler = (status) => (err, req, res) => res.status(status).send('Error Found');
+
+//============= MIDDLEWARE ================
+//Function currying
+function LOGGER(message) {
+
+  return function requestTime(req, res, next) {
+    req.time = Date.now();
+    console.log(`${req.path}, ${req.method}, ${req.time}, ${message}`);
+    next();
+  }
 }
 
-function LOGGER(req, res, next) {
-  console.log(`${req.method}`)
+function randomBoolean(req, res, next){
+  req.valid = Boolean(Math.round(Math.random()));
   next();
 }
 
-const errorHandler = (status) => (req, res) => res.status(status).send('Error Found');
+//======= app.use ===========
+// app.use(LOGGER('Ohh, you betcha...your code worked'));
+// app.use(randomBoolean());
 
-function logNumbers(req, res, next) {
-  console.log('Here are you home numbers', req.numbers);
-  next(); //MUST CALL THIS, if not handling response, you need next()
-}
-
-function addNumbers(req, res, next) {
-  req.numbers = [1, 2, 3];
-  next();
-}
-
-function handleNewRoute(req, res) {
-  let number = req.numbers;
-  res.send(`New Route numbers: ${number[0]} ${number[1]}`);
-}
-
-app.get('/', logNumbers, (req, res) => {
-  res.send('You have hit the home route');
+//========== ROUTE TO GET ALL CATEGORIES ========
+/**
+ * Get a list of posts
+ * @returns {array} db, status code 200 [...posts];
+ * @returns {error} status code 500 - server error;
+ */
+app.get('/categories', randomBoolean, LOGGER('GET categories'), (req, res, next) => {
+  let count = db.length;
+  let results = db;
+  // if (req.valid) {
+    res.json({ count, results });  
+  // } else {
+  //   res.send('invalid');
+  // }
+  
 });
 
-app.get('/newroute', addNumbers, handleNewRoute);
-
-
+//========== ROUTE TO CREATE A CATEGORY ========
+app.post('/categories', randomBoolean, LOGGER('POST categories'), (req, res, next) => {
+    // if(req.valid === 'true'){
+      let record = req.body;
+      record.id = Math.random();
+      db.push(record);
+      res.json(record);
+      res.sendStatus(200);
+    // } else {
+    //   next('invalid');
+    // }
+});
 
 //app.use special use case, put at bottom.
 app.use(errorHandler(404));
+app.use(errorHandler(500));
 
-
-// app.post();
-// app.patch();
-// app.delete();
-
-app.listen(PORT, () => {
-  console.log(`Server is up on ${PORT}, nice.`)
-});
+//========== EXPORT ==========
+module.exports = {
+  app: app, //could just do app, 
+  start: () => {
+    const port = process.env.PORT || 8080;
+    app.listen(port, () => {
+      console.log(`Server listening on ${port}`);
+    });
+  },
+}
